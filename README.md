@@ -158,11 +158,11 @@ Definitions of error types for the socket creation function:
 #### RioAddress
 Contains a structure with host data and port number.
 
-`RioAddress.ipv6`
+`RioAddress.ipv6` an IPv6 address.
 
-`RioAddress.ipv4`
+`RioAddress.ipv4` an IPv4-mapped IPv6 address.
 
-`RioAddress.port`
+`RioAddress.port` a port number.
 
 ### Callbacks
 `void (*RioCallback)(RioSocket, const RioAddress*, const uint8_t*, int, RioType)`
