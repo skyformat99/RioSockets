@@ -112,6 +112,8 @@ extern "C" {
 
 	RIOSOCKETS_API void riosockets_receive(RioSocket, int);
 
+	RIOSOCKETS_API RioStatus riosockets_address_get(RioSocket, RioAddress*);
+
 	RIOSOCKETS_API RioStatus riosockets_address_is_equal(const RioAddress*, const RioAddress*);
 
 	RIOSOCKETS_API RioStatus riosockets_address_set_ip(RioAddress*, const char*);
