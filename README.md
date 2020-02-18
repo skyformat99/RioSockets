@@ -168,9 +168,9 @@ Contains a structure with host data and port number.
 `void (*RioCallback)(RioSocket, const RioAddress*, const uint8_t*, int, RioType)` invoked when a message was received or when send operation was failed with the appropriate data.
 
 ### Functions
-`riosockets_initialize(void)` initializes the native library. Should be called before starting the work. Returns status with a result.
+`riosockets_initialize(void)` initializes the library. Should be called before starting the work. Returns status with a result.
 
-`riosockets_deinitialize(void)` deinitializes the native library. Should be called after the work is done.
+`riosockets_deinitialize(void)` deinitializes the library. Should be called after the work is done.
 
 `riosockets_create(int maxBufferLength, int sendBufferSize, int receiveBufferSize, RioCallback callback, RioError* error)` creates a new socket with a specified size of buffers for sending and receiving. Returns the `RioSocket` handle at success or writes an error. The max buffer length indicates a maximal possible length of a payload per message. The send and receive buffer size indicate the maximal size of ring buffers that sliced for payloads.
 
