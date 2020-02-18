@@ -101,7 +101,7 @@ if (error != RIOSOCKETS_ERROR_NONE) {
         ...                               
     */
 
-    riosockets_send(server);
+    riosockets_send(client);
 
     while (!_kbhit()) {
         riosockets_receive(client, RIOSOCKETS_MAX_COMPLETION_RESULTS);
