@@ -53,9 +53,6 @@ if (error != RIOSOCKETS_ERROR_NONE) {
     if (riosockets_bind(server, &listenAddress) == 0)
         printf("Socket bound!\n");
 
-    char ip[RIOSOCKETS_HOSTNAME_SIZE] = { 0 };
-    RioAddress address = { 0 };
-
     while (!_kbhit()) {
         riosockets_receive(server, RIOSOCKETS_MAX_COMPLETION_RESULTS);
     }
