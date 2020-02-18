@@ -165,37 +165,39 @@ Contains a structure with host data and port number.
 `RioAddress.port` a port number.
 
 ### Callbacks
-`void (*RioCallback)(RioSocket, const RioAddress*, const uint8_t*, int, RioType)`
+`void (*RioCallback)(RioSocket, const RioAddress*, const uint8_t*, int, RioType)` invoked when a message was received or when send operation was failed with the appropriate data.
 
 ### Functions
-`riosockets_initialize(void)`
+`riosockets_initialize(void)` initializes the native library. Should be called before starting the work. Returns status with a result.
 
-`riosockets_deinitialize(void)`
+`riosockets_deinitialize(void)` deinitializes the native library. Should be called after the work is done.
 
-`riosockets_create(int, int, int, RioCallback, RioError*)`
+`riosockets_create(int maxBufferLength, int sendBufferSize, int receiveBufferSize, RioCallback callback, RioError* error)` creates a new socket with a specified size of buffers for sending and receiving. Returns the `RioSocket` handle at success or writes an error. The max buffer length indicates a maximal possible length of a payload per message. The send and receive buffer size indicate the maximal size of ring buffers that sliced for payloads.
 
-`riosockets_destroy(RioSocket*)`
+`riosockets_destroy(RioSocket* socket)` destroys a socket, frees all allocated memory, and reset the handle.
 
-`riosockets_bind(RioSocket, const RioAddress*)`
+`riosockets_bind(RioSocket socket, const RioAddress* address)` assigns an address to a socket. The address parameter can be set to `NULL` to let the operating system assign any address. Returns 0 on success or != 0 on failure.
 
-`riosockets_connect(RioSocket, const RioAddress*)`
+`riosockets_connect(RioSocket socket, const RioAddress* address)` connects a socket to an address. Returns 0 on success or != 0 on failure.
 
-`riosockets_set_option(RioSocket, int, int, const int*, int)`
+`riosockets_set_option(RioSocket socket, int level, int optionName, const int* optionValue, int optionLength)` sets the current value for a socket option associated with a socket. This function can be used to set platform-specific options that were not specified at socket creation by default. Returns status with a result.
 
-`riosockets_get_option(RioSocket, int, int, int*, int*)`
+`riosockets_get_option(RioSocket socket, int level, int optionName, int* optionValue, int* optionLength)` gets the current value for a socket option associated with a socket. A length of an option value should be initially set to an appropriate size. Returns status with a result.
 
-`riosockets_buffer(RioSocket, const RioAddress*, int)`
+`riosockets_buffer(RioSocket socket, const RioAddress* address, int dataLength)` attempts to slice the ring buffer to write a message for a specified address of a receiver. The address parameter can be set to `NULL` if a socket is connected to an address. The data length parameter can't be larger than the length that was set at socket creation. If the acquirement of a buffer was failed due to exceeded capacity of the ring buffer, this function will return `NULL`.
 
-`riosockets_send(RioSocket)`
+`riosockets_send(RioSocket socket)` sends all messages that were written using sliced buffers and checks for completion. This function should be regularly called to ensure that messages are sent to designated receivers. If the sending was failed due to an underlayer problem of socket subsystem or kernel interruption, then the callback will be invoked with the appropriate data.
 
-`riosockets_receive(RioSocket, int)`
+`riosockets_receive(RioSocket socket, int maxCompletions)` receives all messages that were processed by the underlayer socket subsystem after checking for completion. This function should be regularly called to ensure that messages are received from senders. If a message was received successfully, then the callback will be invoked with the appropriate data. The number of completions per call can't exceed the `RIOSOCKETS_MAX_COMPLETION_RESULTS` constant.
 
-`riosockets_address_is_equal(const RioAddress*, const RioAddress*)`
+`riosockets_address_get(RioSocket socket, RioAddress* address)` gets an address from a bound or connected socket. This function is especially useful to determine the local association that has been set by the operating system. Returns status with a result.
 
-`riosockets_address_set_ip(RioAddress*, const char*)`
+`riosockets_address_is_equal(const RioAddress*, const RioAddress*)` compares two addresses for equality. Returns status with a result.
 
-`riosockets_address_get_ip(const RioAddress*, char*, int)`
+`riosockets_address_is_equal(const RioAddress* left, const RioAddress* right)` sets an IP address. Returns status with a result.
 
-`riosockets_address_set_hostname(RioAddress*, const char*)`
+`riosockets_address_set_ip(RioAddress* address, const char* ip)` gets an IP address. The capacity of the string should be equal to `RIOSOCKETS_HOSTNAME_SIZE` constant. Returns status with a result.
 
-`riosockets_address_get_hostname(const RioAddress*, char*, int)`
+`riosockets_address_set_hostname(RioAddress* address, const char* name)` sets host name or an IP address. Returns status with a result.
+
+`riosockets_address_get_hostname(const RioAddress* address, char* name, int nameLength)` attempts to do a reverse lookup from the address. Returns status with a result.
