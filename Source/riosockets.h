@@ -601,9 +601,6 @@ extern "C" {
 		Rio* rio = (Rio*)socket;
 
 		if (rio->socket > 0 && maxCompletions > 0) {
-			if (maxCompletions > rio->receiveBufferCount)
-				maxCompletions = rio->receiveBufferCount;
-
 			if (maxCompletions > RIOSOCKETS_MAX_COMPLETION_RESULTS)
 				maxCompletions = RIOSOCKETS_MAX_COMPLETION_RESULTS;
 
