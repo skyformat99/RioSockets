@@ -94,7 +94,7 @@ if (error != RIOSOCKETS_ERROR_NONE) {
     if (riosockets_connect(client, &connectionAddress) == 0)
         printf("Socket connected!\n");
 
-    uint8_t* buffer = riosockets_buffer(client, address, 1024);
+    uint8_t* buffer = riosockets_buffer(client, NULL, 1024);
 
     /*
         Write an outgoing message to `buffer` of it's not `NULL`
