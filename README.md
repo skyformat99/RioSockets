@@ -94,7 +94,7 @@ if (error != RIOSOCKETS_ERROR_NONE) {
     uint8_t* buffer = riosockets_buffer(client, NULL, 1024);
 
     /*
-        Write an outgoing message to `buffer` if it's not `NULL`
+        Write an outgoing message to `buffer` if it's not `NULL`, multiple buffers can be acquired sequentially
         ...                               
     */
 
