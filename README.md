@@ -10,7 +10,7 @@ Building
 --------
 The library can be built using [CMake](https://cmake.org/download/) with GNU Make or Visual Studio.
 
-It requires Windows 8 \ Windows Server 2012 or higher.
+It requires Windows 8 / Windows Server 2012 or higher.
 
 Usage
 --------
