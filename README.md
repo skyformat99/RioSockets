@@ -172,7 +172,7 @@ Contains a structure with host data and port number.
 
 `riosockets_deinitialize(void)` deinitializes the library. Should be called after the work is done.
 
-`riosockets_create(int maxBufferLength, int sendBufferSize, int receiveBufferSize, RioCallback callback, RioError* error)` creates a new socket with a specified size of buffers for sending and receiving. Returns the `RioSocket` handle at success or writes an error. The max buffer length indicates a maximal possible length of a payload per message. The send and receive buffer size indicate the maximal size of ring buffers that sliced for payloads.
+`riosockets_create(int maxBufferLength, int sendBufferSize, int receiveBufferSize, RioCallback callback, RioError* error)` creates a new socket with a specified size of buffers for sending and receiving. Returns the `RioSocket` handle at success or writes an error. The max buffer length indicates a maximum possible length of a payload per message. The send and receive buffer size indicate the maximum size of ring buffers that sliced for payloads.
 
 `riosockets_destroy(RioSocket* socket)` destroys a socket, frees all allocated memory, and reset the handle.
 
