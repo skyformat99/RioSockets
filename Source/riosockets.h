@@ -29,7 +29,7 @@
 
 #define RIOSOCKETS_VERSION_MAJOR 1
 #define RIOSOCKETS_VERSION_MINOR 0
-#define RIOSOCKETS_VERSION_PATCH 0
+#define RIOSOCKETS_VERSION_PATCH 1
 
 #define RIOSOCKETS_CALLBACK __cdecl
 
@@ -153,6 +153,8 @@ extern "C" {
 		WSAEVENT sendEvent;
 		WSAEVENT receiveEvent;
 		SOCKET socket;
+		RIORESULT* sendCompletionResults;
+		RIORESULT* receiveCompletionResults;
 		char* sendMemory;
 		char* sendMemoryAddress;
 		char* receiveMemory;
@@ -321,6 +323,8 @@ extern "C" {
 				goto destroy;
 			}
 
+			rio->sendCompletionResults = calloc(rio->sendBufferCount, sizeof(RIORESULT));
+
 			sendQueue.Type = RIO_EVENT_COMPLETION;
 			sendQueue.Event.EventHandle = rio->sendEvent;
 
@@ -335,6 +339,8 @@ extern "C" {
 
 				goto destroy;
 			}
+
+			rio->receiveCompletionResults = calloc(rio->receiveBufferCount, sizeof(RIORESULT));
 
 			receiveQueue.Type = RIO_EVENT_COMPLETION;
 			receiveQueue.Event.EventHandle = rio->receiveEvent;
@@ -475,6 +481,8 @@ extern "C" {
 
 			free(rio->sendBuffers);
 			free(rio->receiveBuffers);
+			free(rio->sendCompletionResults);
+			free(rio->receiveCompletionResults);
 
 			free(rio);
 
@@ -592,8 +600,7 @@ extern "C" {
 				--rio->sendBufferQueue;
 			}
 
-			RIORESULT results[RIOSOCKETS_MAX_COMPLETION_RESULTS] = { 0 };
-			int completionCount = rio->functions.RIODequeueCompletion(rio->sendQueue, results, rio->sendBufferCount);
+			int completionCount = rio->functions.RIODequeueCompletion(rio->sendQueue, rio->sendCompletionResults, rio->sendBufferCount);
 
 			rio->sendBufferPending -= completionCount;
 		}
@@ -606,8 +613,7 @@ extern "C" {
 			if (maxCompletions > RIOSOCKETS_MAX_COMPLETION_RESULTS)
 				maxCompletions = RIOSOCKETS_MAX_COMPLETION_RESULTS;
 
-			RIORESULT results[RIOSOCKETS_MAX_COMPLETION_RESULTS] = { 0 };
-			int completionCount = rio->functions.RIODequeueCompletion(rio->receiveQueue, results, maxCompletions);
+			int completionCount = rio->functions.RIODequeueCompletion(rio->receiveQueue, rio->receiveCompletionResults, maxCompletions);
 
 			if (completionCount > 0) {
 				for (int i = 0; i < completionCount; i++) {
@@ -615,7 +621,7 @@ extern "C" {
 
 					riosockets_address_extract(&address, (struct sockaddr_storage*)(rio->receiveMemoryAddress + rio->receiveBufferHead * sizeof(SOCKADDR_INET)));
 
-					rio->callback(socket, &address, (uint8_t*)(rio->receiveMemory + rio->receiveBufferHead * rio->maxBufferLength), results[i].BytesTransferred, RIOSOCKETS_TYPE_RECEIVE);
+					rio->callback(socket, &address, (uint8_t*)(rio->receiveMemory + rio->receiveBufferHead * rio->maxBufferLength), rio->receiveCompletionResults[i].BytesTransferred, RIOSOCKETS_TYPE_RECEIVE);
 					rio->functions.RIOReceiveEx(rio->requestQueue, &rio->receiveBuffers[rio->receiveBufferHead].data, 1, NULL, &rio->receiveBuffers[rio->receiveBufferHead].address, NULL, NULL, 0, 0);
 
 					++rio->receiveBufferHead;
