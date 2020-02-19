@@ -184,7 +184,7 @@ Contains a structure with host data and port number.
 
 `riosockets_get_option(RioSocket socket, int level, int optionName, int* optionValue, int* optionLength)` gets the current value for a socket option associated with a socket. A length of an option value should be initially set to an appropriate size. Returns status with a result.
 
-`riosockets_buffer(RioSocket socket, const RioAddress* address, int dataLength)` attempts to slice the ring buffer to write a message for a specified address of a receiver. The address parameter can be set to `NULL` if a socket is connected to an address. The data length parameter can't exceed the length that was set at socket creation. If the acquirement of a buffer was failed due to exceeded capacity of the ring buffer, this function will return `NULL`.
+`riosockets_buffer(RioSocket socket, const RioAddress* address, int dataLength)` attempts to slice the ring buffer for writing a message for a specified address of a receiver. The address parameter can be set to `NULL` if a socket is connected to an address. The data length parameter can't exceed the length that was set at socket creation. If the acquirement of a buffer was failed due to exceeded capacity of the ring buffer, this function will return `NULL`.
 
 `riosockets_send(RioSocket socket)` sends all messages that were written using sliced buffers and checks for completion. This function should be regularly called to ensure that messages are sent to designated receivers. If the sending was failed due to an underlayer error of socket subsystem or kernel interruption, then the callback will be invoked with the appropriate data.
 
