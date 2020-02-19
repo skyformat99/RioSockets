@@ -592,7 +592,7 @@ extern "C" {
 					if (rio->sendBuffers[sendBufferHead].addressless == FALSE)
 						riosockets_address_extract(&address, (struct sockaddr_storage*)(rio->sendMemoryAddress + sendBufferHead * sizeof(SOCKADDR_INET)));
 
-					rio->callback(socket, &address, (uint8_t*)(rio->sendMemory + sendBufferHead * rio->maxBufferLength), rio->sendBuffers[sendBufferHead].data.Length, RIOSOCKETS_TYPE_SEND);
+					rio->callback(socket, &address, (const uint8_t*)(rio->sendMemory + sendBufferHead * rio->maxBufferLength), rio->sendBuffers[sendBufferHead].data.Length, RIOSOCKETS_TYPE_SEND);
 				} else {
 					++rio->sendBufferPending;
 				}
@@ -621,7 +621,7 @@ extern "C" {
 
 					riosockets_address_extract(&address, (struct sockaddr_storage*)(rio->receiveMemoryAddress + rio->receiveBufferHead * sizeof(SOCKADDR_INET)));
 
-					rio->callback(socket, &address, (uint8_t*)(rio->receiveMemory + rio->receiveBufferHead * rio->maxBufferLength), rio->receiveCompletionResults[i].BytesTransferred, RIOSOCKETS_TYPE_RECEIVE);
+					rio->callback(socket, &address, (const uint8_t*)(rio->receiveMemory + rio->receiveBufferHead * rio->maxBufferLength), rio->receiveCompletionResults[i].BytesTransferred, RIOSOCKETS_TYPE_RECEIVE);
 					rio->functions.RIOReceiveEx(rio->requestQueue, &rio->receiveBuffers[rio->receiveBufferHead].data, 1, NULL, &rio->receiveBuffers[rio->receiveBufferHead].address, NULL, NULL, 0, 0);
 
 					++rio->receiveBufferHead;
