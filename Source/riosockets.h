@@ -1,5 +1,5 @@
 /*
- *  Lightweight UDP sockets abstraction for rapid implementation of message-oriented protocols
+ *  High-performance zero-copy UDP sockets abstraction over Registered I/O
  *  Copyright (c) 2020 Stanislav Denisov
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
