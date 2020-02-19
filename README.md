@@ -165,7 +165,7 @@ Contains a structure with host data and port number.
 `RioAddress.port` a port number.
 
 ### Callbacks
-`void (*RioCallback)(RioSocket socket, const RioAddress* address, const uint8_t* data, int dataLength, RioType)` invoked when a message was received or when send operation was failed with the appropriate data. If send operation was performed using addressless buffer, then the address will be set to `NULL`.
+`void (*RioCallback)(RioSocket socket, const RioAddress* address, const uint8_t* data, int dataLength, RioType)` invoked when a message was received or when send operation was failed with the appropriate data. If send operation was performed using addressless buffer, then the address parameter will be set to `NULL`.
 
 ### Functions
 `riosockets_initialize(void)` initializes the library. Should be called before starting the work. Returns status with a result.
