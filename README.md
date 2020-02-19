@@ -194,9 +194,9 @@ Contains a structure with host data and port number.
 
 `riosockets_address_is_equal(const RioAddress*, const RioAddress*)` compares two addresses for equality. Returns status with a result.
 
-`riosockets_address_is_equal(const RioAddress* left, const RioAddress* right)` sets an IP address. Returns status with a result.
+`riosockets_address_set_ip(RioAddress* address, const char* ip)` sets an IP address. Returns status with a result.
 
-`riosockets_address_set_ip(RioAddress* address, const char* ip)` gets an IP address. The capacity of the string should be equal to `RIOSOCKETS_HOSTNAME_SIZE` constant. Returns status with a result.
+`riosockets_address_get_ip(const RioAddress* address, char* ip, int ipLength)` gets an IP address. The capacity of the string should be equal to `RIOSOCKETS_HOSTNAME_SIZE` constant. Returns status with a result.
 
 `riosockets_address_set_hostname(RioAddress* address, const char* name)` sets host name or an IP address. Returns status with a result.
 
